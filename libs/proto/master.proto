@@ -3,9 +3,18 @@ syntax = "proto3";
 option go_package = "github.com/Mau-MD/SSEngine/libs/proto";
 
 service MasterService {
+    rpc ConnectToStreamNode(ConnectToStreamNodeRequest) returns (ConnectToStreamNodeResponse) {}
     rpc AssignAndGetStreamNode(AssignAndGetStreamNodeRequest) returns (AssignAndGetStreamNodeResponse) {}
     rpc GetStreamNode(GetStreamNodeRequest) returns (GetStreamNodeResponse) {}
     rpc TerminateSession(TerminateSessionRequest) returns (TerminateSessionResponse) {}
+}
+
+message ConnectToStreamNodeRequest {
+    StreamNode stream_node = 1;
+}
+
+message ConnectToStreamNodeResponse {
+    bool success = 1;
 }
 
 message AssignAndGetStreamNodeRequest {
@@ -30,4 +39,11 @@ message TerminateSessionRequest {
 
 message TerminateSessionResponse {
     bool success = 1;
+}
+
+message StreamNode {
+    string id = 1;
+    string uri = 2;
+    int32 load = 3;
+    int32 capacity = 4;
 }

@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	MasterService_ConnectToStreamNode_FullMethodName    = "/MasterService/ConnectToStreamNode"
 	MasterService_AssignAndGetStreamNode_FullMethodName = "/MasterService/AssignAndGetStreamNode"
 	MasterService_GetStreamNode_FullMethodName          = "/MasterService/GetStreamNode"
 	MasterService_TerminateSession_FullMethodName       = "/MasterService/TerminateSession"
@@ -28,6 +29,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MasterServiceClient interface {
+	ConnectToStreamNode(ctx context.Context, in *ConnectToStreamNodeRequest, opts ...grpc.CallOption) (*ConnectToStreamNodeResponse, error)
 	AssignAndGetStreamNode(ctx context.Context, in *AssignAndGetStreamNodeRequest, opts ...grpc.CallOption) (*AssignAndGetStreamNodeResponse, error)
 	GetStreamNode(ctx context.Context, in *GetStreamNodeRequest, opts ...grpc.CallOption) (*GetStreamNodeResponse, error)
 	TerminateSession(ctx context.Context, in *TerminateSessionRequest, opts ...grpc.CallOption) (*TerminateSessionResponse, error)
@@ -39,6 +41,16 @@ type masterServiceClient struct {
 
 func NewMasterServiceClient(cc grpc.ClientConnInterface) MasterServiceClient {
 	return &masterServiceClient{cc}
+}
+
+func (c *masterServiceClient) ConnectToStreamNode(ctx context.Context, in *ConnectToStreamNodeRequest, opts ...grpc.CallOption) (*ConnectToStreamNodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConnectToStreamNodeResponse)
+	err := c.cc.Invoke(ctx, MasterService_ConnectToStreamNode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *masterServiceClient) AssignAndGetStreamNode(ctx context.Context, in *AssignAndGetStreamNodeRequest, opts ...grpc.CallOption) (*AssignAndGetStreamNodeResponse, error) {
@@ -75,6 +87,7 @@ func (c *masterServiceClient) TerminateSession(ctx context.Context, in *Terminat
 // All implementations must embed UnimplementedMasterServiceServer
 // for forward compatibility.
 type MasterServiceServer interface {
+	ConnectToStreamNode(context.Context, *ConnectToStreamNodeRequest) (*ConnectToStreamNodeResponse, error)
 	AssignAndGetStreamNode(context.Context, *AssignAndGetStreamNodeRequest) (*AssignAndGetStreamNodeResponse, error)
 	GetStreamNode(context.Context, *GetStreamNodeRequest) (*GetStreamNodeResponse, error)
 	TerminateSession(context.Context, *TerminateSessionRequest) (*TerminateSessionResponse, error)
@@ -88,6 +101,9 @@ type MasterServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedMasterServiceServer struct{}
 
+func (UnimplementedMasterServiceServer) ConnectToStreamNode(context.Context, *ConnectToStreamNodeRequest) (*ConnectToStreamNodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConnectToStreamNode not implemented")
+}
 func (UnimplementedMasterServiceServer) AssignAndGetStreamNode(context.Context, *AssignAndGetStreamNodeRequest) (*AssignAndGetStreamNodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AssignAndGetStreamNode not implemented")
 }
@@ -116,6 +132,24 @@ func RegisterMasterServiceServer(s grpc.ServiceRegistrar, srv MasterServiceServe
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&MasterService_ServiceDesc, srv)
+}
+
+func _MasterService_ConnectToStreamNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConnectToStreamNodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MasterServiceServer).ConnectToStreamNode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MasterService_ConnectToStreamNode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MasterServiceServer).ConnectToStreamNode(ctx, req.(*ConnectToStreamNodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _MasterService_AssignAndGetStreamNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -179,6 +213,10 @@ var MasterService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "MasterService",
 	HandlerType: (*MasterServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ConnectToStreamNode",
+			Handler:    _MasterService_ConnectToStreamNode_Handler,
+		},
 		{
 			MethodName: "AssignAndGetStreamNode",
 			Handler:    _MasterService_AssignAndGetStreamNode_Handler,

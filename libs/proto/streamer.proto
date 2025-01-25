@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "github.com/Mau-MD/SSEngine/libs/proto";
+
+service Streamer {
+	rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+}
+
+message HeartbeatRequest {
+    string streamerId = 1;
+}
+
+message HeartbeatResponse {
+    bool success = 1;
+}
