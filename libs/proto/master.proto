@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option go_package = "github.com/Mau-MD/SSEngine/libs/proto";
+
+service MasterService {
+    rpc AssignAndGetStreamNode(AssignAndGetStreamNodeRequest) returns (AssignAndGetStreamNodeResponse) {}
+    rpc GetStreamNode(GetStreamNodeRequest) returns (GetStreamNodeResponse) {}
+    rpc TerminateSession(TerminateSessionRequest) returns (TerminateSessionResponse) {}
+}
+
+message AssignAndGetStreamNodeRequest {
+    string session_id = 1;
+}
+
+message AssignAndGetStreamNodeResponse {
+    string stream_node_uri = 1;
+}
+
+message GetStreamNodeRequest {
+    string session_id = 1;
+}
+
+message GetStreamNodeResponse {
+    string stream_node_uri = 1;
+}
+
+message TerminateSessionRequest {
+    string session_id = 1;
+}
+
+message TerminateSessionResponse {
+    bool success = 1;
+}
