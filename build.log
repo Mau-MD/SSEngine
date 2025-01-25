@@ -1,0 +1,113 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 856B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.23.5-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/10] FROM docker.io/library/golang:1.23.5-bookworm@sha256:3149bc5043fa58cf127fd8db1fdd4e533b6aed5a40d663d4f4ae43d20386665f
+#4 DONE 0.0s
+
+#5 [ 2/10] WORKDIR /app
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 1.49kB 0.0s done
+#6 DONE 0.0s
+
+#7 [ 3/10] COPY ./services/master/go.mod ./services/master/go.sum ./
+#7 DONE 0.1s
+
+#8 [ 4/10] COPY ./services/master/scripts/replace_go_mod.sh ./scripts/replace_go_mod.sh
+#8 DONE 0.0s
+
+#9 [ 5/10] COPY ./libs/proto/ ./output/libs/proto/
+#9 DONE 0.0s
+
+#10 [ 6/10] RUN chmod +x ./scripts/replace_go_mod.sh
+#10 DONE 0.1s
+
+#11 [ 7/10] RUN ./scripts/replace_go_mod.sh
+#11 0.088 Current directory contents:
+#11 0.089 total 8
+#11 0.089 drwxr-xr-x 1 root root   14 Jan 25 02:39 .
+#11 0.089 drwxr-xr-x 1 root root    6 Jan 25 02:39 ..
+#11 0.089 -rw-r--r-- 1 root root  815 Jan 25 02:30 go.mod
+#11 0.089 -rw-r--r-- 1 root root 2947 Jan 25 01:51 go.sum
+#11 0.089 drwxr-xr-x 1 root root    8 Jan 25 02:39 output
+#11 0.089 drwxr-xr-x 1 root root   34 Jan 25 02:39 scripts
+#11 0.089 Contents of go.mod before:
+#11 0.089 module github.com/Mau-MD/SSEngine/services/master
+#11 0.089 
+#11 0.089 go 1.23.3
+#11 0.089 
+#11 0.089 replace github.com/Mau-MD/SSEngine/libs/proto => ../../libs/proto
+#11 0.089 
+#11 0.089 require github.com/redis/go-redis/v9 v9.7.0
+#11 0.089 
+#11 0.089 require (
+#11 0.089 	github.com/fatih/color v1.18.0 // indirect
+#11 0.089 	github.com/mattn/go-colorable v0.1.13 // indirect
+#11 0.089 	github.com/mattn/go-isatty v0.0.20 // indirect
+#11 0.089 	golang.org/x/net v0.32.0 // indirect
+#11 0.089 	golang.org/x/sys v0.28.0 // indirect
+#11 0.089 	golang.org/x/text v0.21.0 // indirect
+#11 0.089 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241202173237-19429a94021a // indirect
+#11 0.089 	google.golang.org/grpc v1.70.0 // indirect
+#11 0.089 	google.golang.org/protobuf v1.36.4 // indirect
+#11 0.089 )
+#11 0.089 
+#11 0.089 require (
+#11 0.089 	github.com/Mau-MD/SSEngine/libs/proto v0.0.0
+#11 0.089 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+#11 0.089 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+#11 0.089 )
+#11 0.091 Contents of go.mod after:
+#11 0.091 module github.com/Mau-MD/SSEngine/services/master
+#11 0.091 
+#11 0.091 go 1.23.3
+#11 0.091 
+#11 0.091 replace github.com/Mau-MD/SSEngine/libs/proto => ./output/libs/proto
+#11 0.091 
+#11 0.091 require github.com/redis/go-redis/v9 v9.7.0
+#11 0.091 
+#11 0.091 require (
+#11 0.091 	github.com/fatih/color v1.18.0 // indirect
+#11 0.091 	github.com/mattn/go-colorable v0.1.13 // indirect
+#11 0.091 	github.com/mattn/go-isatty v0.0.20 // indirect
+#11 0.091 	golang.org/x/net v0.32.0 // indirect
+#11 0.091 	golang.org/x/sys v0.28.0 // indirect
+#11 0.091 	golang.org/x/text v0.21.0 // indirect
+#11 0.091 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241202173237-19429a94021a // indirect
+#11 0.091 	google.golang.org/grpc v1.70.0 // indirect
+#11 0.091 	google.golang.org/protobuf v1.36.4 // indirect
+#11 0.091 )
+#11 0.091 
+#11 0.091 require (
+#11 0.091 	github.com/Mau-MD/SSEngine/libs/proto v0.0.0
+#11 0.091 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+#11 0.091 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+#11 0.091 )
+#11 DONE 0.1s
+
+#12 [ 8/10] RUN go mod download
+#12 DONE 1.5s
+
+#13 [ 9/10] COPY ./services/master/*.go ./
+#13 DONE 0.0s
+
+#14 [10/10] RUN go build -o /master .
+#14 DONE 7.0s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 0.5s done
+#15 writing image sha256:d2fc32f0734b2247e9029fd478d3320a8a913d711ec489cc89410fe82c4a7df3 done
+#15 naming to docker.io/library/master done
+#15 DONE 0.5s
